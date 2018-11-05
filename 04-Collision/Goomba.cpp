@@ -32,14 +32,14 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 }
 
-void CGoomba::Render()
+void CGoomba::Render(float &xcamera, float &ycamera)
 {
 	int ani = GOOMBA_ANI_WALKING;
 	if (state == GOOMBA_STATE_DIE) {
 		ani = GOOMBA_ANI_DIE;
 	}
 
-	animations[ani]->Render(x,y);
+	animations[ani]->Render(x - xcamera,y - ycamera);
 	//RenderBoundingBox();
 }
 

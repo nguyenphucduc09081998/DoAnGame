@@ -59,7 +59,7 @@ public:
 
 	int GetState() { return this->state; }
 
-	void RenderBoundingBox();
+	virtual void RenderBoundingBox(float &xcamera, float &ycamera);
 
 	LPCOLLISIONEVENT SweptAABBEx(LPGAMEOBJECT coO);
 	void CalcPotentialCollisions(vector<LPGAMEOBJECT> *coObjects, vector<LPCOLLISIONEVENT> &coEvents);
@@ -77,7 +77,7 @@ public:
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom) = 0;
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
-	virtual void Render() = 0;
+	virtual void Render(float &xcamera, float &ycamera) = 0;
 	virtual void SetState(int state) { this->state = state; }
 
 

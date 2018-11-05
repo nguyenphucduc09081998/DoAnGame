@@ -1,8 +1,8 @@
 #include "background.h"
 
-void CBackground::Render()
+void CBackground::Render(float &xcamera, float &ycamera)
 {
-	animations[0]->Render(x, y);
+	animations[0]->Render(x - xcamera, y - ycamera);
 	//RenderBoundingBox();
 }
 

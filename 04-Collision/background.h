@@ -7,6 +7,6 @@
 class CBackground : public CGameObject
 {
 public:
-	virtual void Render();
+	virtual void Render(float &xcamera, float &ycamera); //them x y trong render 
 	virtual void GetBoundingBox(float &l, float &t, float &r, float &b);
 };

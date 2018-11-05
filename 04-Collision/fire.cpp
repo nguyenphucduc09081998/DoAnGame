@@ -1,8 +1,8 @@
 #include "fire.h"
 
-void CFire::Render()
+void CFire::Render(float &xcamera, float&ycamera)
 {
-	animations[0]->Render(x, y);
+	animations[0]->Render(x - xcamera, y - ycamera);
 	//RenderBoundingBox();
 }
 

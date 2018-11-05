@@ -86,10 +86,10 @@ void CSampleKeyHander::OnKeyDown(int KeyCode)
 	//dgsdfg
 	case DIK_A: // reset
 		simon->SetState(SIMON_STATE_IDLE);
-		//simon->SetLevel(SIMON_LEVEL_BIG);
-		//simon->SetPosition(50.0f, 0.0f);
-		//simon->SetSpeed(0, 0);
-		//break;
+		simon->SetLevel(SIMON_LEVEL_BIG);
+		simon->SetPosition(50.0f, 0.0f);
+		simon->SetSpeed(0, 0);
+		break;
 	
 	}
 }
@@ -106,7 +106,7 @@ void CSampleKeyHander::KeyState(BYTE *states)
 	
 	if (game->IsKeyDown(DIK_RIGHT)) {
 		simon->SetState(SIMON_STATE_WALKING_RIGHT);
-		simon->SetLevel(SIMON_LEVEL_BIG);
+		//simon->SetLevel(SIMON_LEVEL_BIG);
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
 		simon->SetState(SIMON_STATE_WALKING_LEFT);
@@ -327,7 +327,7 @@ void LoadResources()
 	//}
 
 
-	for (int i = 0; i < 50; i++)//add nền 
+	for (int i = 0; i < 48; i++)//add nền 
 	{
 		CBrick *brick = new CBrick();
 		brick->AddAnimation(601);
@@ -384,9 +384,19 @@ void Render()
 
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
-		for (int i = 0; i < objects.size(); i++)
-			objects[i]->Render();
-
+		for (int i = 0; i < objects.size(); i++) {
+			
+			float x = simon->x;
+			float y = 0;
+			if (x > 210) {
+				x -= 210;
+				objects[i]->Render(x, y);
+			}
+			else {
+				x = 0;
+				objects[i]->Render(x, y);
+			}		
+		}
 		spriteHandler->End();
 		d3ddv->EndScene();
 	}

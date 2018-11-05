@@ -8,7 +8,7 @@
 
 #define KEYBOARD_BUFFER_SIZE 1024
 /*
-Abstract class to define keyboard event handlers
+class to define keyboard event handlers
 */
 class CKeyEventHandler
 {
