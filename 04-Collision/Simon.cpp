@@ -3,6 +3,8 @@
 #include "Simon.h"
 #include "Game.h"
 #include "Goomba.h"
+#include <windows.h>
+#include <iostream>
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
@@ -27,7 +29,10 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		untouchable_start = 0;
 		untouchable = 0;
 	}
-
+	if (untouchable == 1) {
+		level = SIMON_STATE_ATTACT;
+		untouchable = 0;
+	}
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
 	{
@@ -55,36 +60,35 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (dynamic_cast<CGoomba *>(e->obj))
 			{
 				CGoomba *goomba = dynamic_cast<CGoomba *>(e->obj);
-
+				if (level < SIMON_LEVEL_BIG) {
+					level == SIMON_LEVEL_ATTACT;
+					StartUntouchable();
+					//level = SIMON_LEVEL_BIG;	
+				}
+			
 				// jump on top >> kill Goomba and deflect a bit 
-				if (e->ny < 0)
-				{
-					if (goomba->GetState() != GOOMBA_STATE_DIE)
-					{
-						goomba->SetState(GOOMBA_STATE_DIE);
-						vy = -SIMON_JUMP_DEFLECT_SPEED;
-					}
-				}
-				else if (e->nx != 0)
-				{
-					/*if (untouchable==0)
-					{
-						if (goomba->GetState()!=GOOMBA_STATE_DIE)
-						{
-							if (level > MARIO_LEVEL_SMALL)
-							{
-								level = MARIO_LEVEL_SMALL;
-								StartUntouchable();
-							}
-							else
-								SetState(MARIO_STATE_DIE);
-						}
-					}*/
-				}
+				//if (e->ny < 0)
+				//{
+				//	if (goomba->GetState() != GOOMBA_STATE_DIE)
+				//	{
+				//		goomba->SetState(GOOMBA_STATE_DIE);
+				//		vy = -SIMON_JUMP_DEFLECT_SPEED;
+				//	}
+				//}
+				//else if (e->nx = 0)
+				//{
+				//	if (untouchable == 0)
+				//	{					
+				//			if (level == SIMON_LEVEL_ATTACT)
+				//			{
+				//				StartUntouchable();
+				//				//level = SIMON_LEVEL_BIG;								
+				//			}						
+				//	}
+				//}
 			}
 		}
 	}
-
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	
@@ -120,12 +124,9 @@ void CSimon::Render(float &xcamera, float &ycamera)
 		}
 	}
 	if (level == SIMON_LEVEL_ATTACT) {
-		
 			if (nx > 0) ani = SIMON_ANI_ATTACT_RIGHT;
 			else ani = SIMON_ANI_ATTACT_LEFT;
-		
-		level = SIMON_LEVEL_BIG;
-		
+			//level = SIMON_LEVEL_BIG;
 	}
 	////giua 2 
 
@@ -189,7 +190,7 @@ void CSimon::SetState(int state)
 	
 	//fghjsdfsd
 	case SIMON_STATE_ATTACT:
-		vx != 0;
+		
 		break;
 	//dsfdsfsfd
 	case SIMON_STATE_WALKING_RIGHT:
