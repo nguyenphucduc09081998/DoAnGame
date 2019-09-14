@@ -1,4 +1,4 @@
-#include "Game.h"
+﻿#include "Game.h"
 #include "debug.h"
 
 CGame * CGame::__instance = NULL;
@@ -299,7 +299,7 @@ void CGame::SweptAABB(
 
 }
 
-CGame *CGame::GetInstance()
+CGame *CGame::GetInstance() // để lấy ra các đói tượng trong  lớp game
 {
 	if (__instance == NULL) __instance = new CGame();
 	return __instance;

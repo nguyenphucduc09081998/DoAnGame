@@ -32,7 +32,7 @@
 #include "Goomba.h"
 #include "Background.h"
 #include "fire.h"
-
+#include "background.h"
 
 
 #define WINDOW_CLASS_NAME L"SampleWindow"
@@ -42,7 +42,7 @@
 #define SCREEN_WIDTH 420 // 320
 #define SCREEN_HEIGHT 240  //240
 
-#define MAX_FRAME_RATE 120
+#define MAX_FRAME_RATE 120 // vẽ tối đa fram trong 1 giây, 
 
 #define ID_TEX_SIMON 0
 #define ID_TEX_FIRE 5//add fire
@@ -53,7 +53,7 @@
 CGame *game;
 CSimon *simon;
 CGoomba *goomba;
-
+CBackground *background;
 
 vector<LPGAMEOBJECT> objects;
 
@@ -73,7 +73,9 @@ void CSampleKeyHander::OnKeyDown(int KeyCode)
 	{
 	
 	case DIK_Z:
-		simon->SetState(SIMON_STATE_JUMP);
+		//if(simon->y <= 121)
+			simon->SetState(SIMON_STATE_JUMP);
+		
 		//simon->SetLevel(SIMON_LEVEL_BIG);
 		break;
 	//gsdg
@@ -358,6 +360,7 @@ void Update(DWORD dt)
 	for (int i = 1; i < objects.size(); i++)
 	{
 		coObjects.push_back(objects[i]);
+
 	}
 
 	for (int i = 0; i < objects.size(); i++)
@@ -378,19 +381,29 @@ void Render()
 	if (d3ddv->BeginScene())
 	{
 		// Clear back buffer with a color
-		d3ddv->ColorFill(bb, NULL, BACKGROUND_COLOR);
+		d3ddv->ColorFill(bb, NULL, BACKGROUND_COLOR); // tô màu màn hình.
 
-		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
+		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);//màu nào mà trong xuốt thì đừng vẽ
 
 		for (int i = 0; i < objects.size(); i++) {
-			
+		//	float rl = background->
 			float x = simon->x;
 			float y = 0;
-			if (x > 210) {
+			DebugOut(L"[INFO] xxxx: %d\n", x);
+			/*float left, top, right, bottom;
+			background->GetBoundingBox(left,top, right, bottom);
+			DebugOut(L"[INFO] left: %d\n", left);
+			DebugOut(L"[INFO] top: %d\n", top);
+			DebugOut(L"[INFO] right: %d\n", right);
+			DebugOut(L"[INFO] bottom: %d\n", bottom);*/
+			if (x > 210 ) {
+				DebugOut(L"[INFO] x> 210: %d\n");
 				x -= 210;
 				objects[i]->Render(x, y);
 			}
+			
 			else {
+				DebugOut(L"[INFO] else: %d\n");
 				x = 0;
 				objects[i]->Render(x, y);
 			}		
@@ -471,19 +484,19 @@ int Run()
 
 		// dt: the time between (beginning of last frame) and now
 		// this frame: the frame we are about to render
-		DWORD dt = now - frameStart;
-
-		if (dt >= tickPerFrame)
+		DWORD dt = now - frameStart;// dt là thời gian bắt đầu vẽ đến lúc hết vẽ.
+		
+		if (dt >= tickPerFrame)// thời gian vẽ một frame kể cả lúc sleep
 		{
 			frameStart = now;
 
 			game->ProcessKeyboard();
 
-			Update(dt);
+			Update(dt);// thời gian đã trôi qua kể từ lúc bất đầu 
 			Render();
 		}
 		else
-			Sleep(tickPerFrame - dt);
+			Sleep(tickPerFrame - dt);//vẽ xong một fram thì cho đi ngủ để chờ vẽ tiếp nhằm tiết kiệm CPU, 
 
 	}
 
@@ -494,7 +507,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 	HWND hWnd = CreateGameWindow(hInstance, nCmdShow, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	game = CGame::GetInstance();
+	game = CGame::GetInstance(); //
 	game->Init(hWnd);
 
 	keyHandler = new CSampleKeyHander();

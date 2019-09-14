@@ -179,6 +179,7 @@ void CSimon::Render(float &xcamera, float &ycamera)
 	animations[ani]->Render(x - xcamera, y - ycamera, alpha);
 
 	RenderBoundingBox(xcamera, ycamera);
+	//if(x > )
 }
 
 void CSimon::SetState(int state)
@@ -202,8 +203,12 @@ void CSimon::SetState(int state)
 		nx = -1;
 		break;
 	case SIMON_STATE_JUMP:
-		if(vy == 0)
+		DebugOut(L"[INFO] vy: %d\n", vy);
+		//DebugOut(L"[INFO] vx: %d\n", vx);
+		if (vy == 0) {
 			vy = -SIMON_JUMP_SPEED_Y;
+		}
+			
 		break;
 	case SIMON_STATE_DOWN:
 		vy = 0;
@@ -211,6 +216,7 @@ void CSimon::SetState(int state)
 		break;
 	case SIMON_STATE_IDLE:
 		vx = 0;
+		//vy = 0;
 		break;
 	case SIMON_STATE_DIE:
 		vy = -SIMON_DIE_DEFLECT_SPEED;

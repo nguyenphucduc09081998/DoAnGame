@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "GameObject.h"
 
 #define SIMON_WALKING_SPEED		0.1f 
@@ -60,7 +60,7 @@
 class CSimon : public CGameObject
 {
 	int level;
-	int untouchable;
+	int untouchable; // biến true false khi simon va chạm trong thời gian sẽ không bị ảnh hưởng bởi va trạm khác
 	DWORD untouchable_start;
 public:
 	CSimon() : CGameObject()

@@ -12,4 +12,5 @@ void CBackground::GetBoundingBox(float &l, float &t, float &r, float &b)
 	t = y;
 	r = x + Background_BBOX_WIDTH;
 	b = y + Background_BBOX_HEIGHT;
+
 }
