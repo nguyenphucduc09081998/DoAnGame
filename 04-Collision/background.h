@@ -1,8 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
-#define Background_BBOX_WIDTH  100//16
-#define Background_BBOX_HEIGHT 15//16 chi bao ngoai cua vao cham
+#define Background_BBOX_WIDTH  770//16
+#define Background_BBOX_HEIGHT 185//16 chi bao ngoai cua vao cham
 
 class CBackground : public CGameObject
 {

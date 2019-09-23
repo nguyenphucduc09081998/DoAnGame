@@ -30,9 +30,11 @@
 #include "Simon.h"
 #include "Brick.h"
 #include "Goomba.h"
-#include "Background.h"
-#include "fire.h"
 #include "background.h"
+//#include "Background.h"
+#include "fire.h"
+
+//#include "Bdfsdf.h"
 
 
 #define WINDOW_CLASS_NAME L"SampleWindow"
@@ -148,6 +150,7 @@ void LoadResources()
 {
 	CTextures * textures = CTextures::GetInstance();
 	textures->Add(ID_TEX_BACKGROUND, L"textures\\background.png", D3DCOLOR_XRGB(0, 0, 0));//add background
+	//textures->Add(ID_TEX_BACKGROUND, L"textures\\lv1.png", D3DCOLOR_XRGB(0, 0, 0));//add background
 	textures->Add(ID_TEX_SIMON, L"textures\\simon.png", D3DCOLOR_XRGB(0, 128, 128));//add simon
 	textures->Add(ID_TEX_MISC, L"textures\\misc.png", D3DCOLOR_XRGB(176, 224, 248));//
 	textures->Add(ID_TEX_ENEMY, L"textures\\enemies.png", D3DCOLOR_XRGB(3, 26, 110));
@@ -157,9 +160,17 @@ void LoadResources()
 
 	CSprites * sprites = CSprites::GetInstance();
 	CAnimations * animations = CAnimations::GetInstance();
-
+	
+	// start load background titemap
 	LPDIRECT3DTEXTURE9 texbackground = textures->Get(ID_TEX_BACKGROUND);//add background
-	sprites->Add(11000, 1, 1, 767, 183, texbackground);
+	//for (int i = 0; i < 47;  i++) {
+		sprites->Add(11000, 1, 1, 767, 183, texbackground);
+	//}
+	//sprites->Add(11000, 1, 1, 767, 183, texbackground);
+	//auto map = TMXTiledMap::create("TileMap.tmx");
+	//addChild(map, 0, 99); // with a tag of '99'3
+
+
 
 	LPDIRECT3DTEXTURE9 texfire = textures->Get(ID_TEX_FIRE);//add fire
 	sprites->Add(15000, 1, 1, 17, 31, texfire);
@@ -279,7 +290,7 @@ void LoadResources()
 	ani->Add(30003);
 	animations->Add(702, ani);
 	//background
-	CBackground *background = new CBackground();
+	background = new CBackground();
 	background->AddAnimation(110);
 	objects.push_back(background);
 
@@ -299,12 +310,12 @@ void LoadResources()
 	objects.push_back(simon);
 
 
-	for (int i = 0; i < 5; i++) {//adđ fire
-		CFire  *fire = new CFire();
-		fire->AddAnimation(150);
-		fire->SetPosition(80 + i*  130.0f, 120);
-		objects.push_back(fire);
-	}
+	//for (int i = 0; i < 5; i++) {//adđ fire
+	//	CFire  *fire = new CFire();
+	//	fire->AddAnimation(150);
+	//	fire->SetPosition(80 + i*  130.0f, 120);
+	//	objects.push_back(fire);
+	//}
 	
 
 
@@ -386,27 +397,40 @@ void Render()
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);//màu nào mà trong xuốt thì đừng vẽ
 
 		for (int i = 0; i < objects.size(); i++) {
-		//	float rl = background->
-			float x = simon->x;
+		 //background->
+			float x = simon->x - SCREEN_WIDTH/2;
 			float y = 0;
-			DebugOut(L"[INFO] xxxx: %d\n", x);
+		//	void width_map = background->GetBoundingBox();
+			DebugOut(L"[INFO] Main.cpp->Render()->for: %d\n", x);
+			float left, top, right, bottom;
+		
+			background->GetBoundingBox(left, top, right, bottom);
 			/*float left, top, right, bottom;
 			background->GetBoundingBox(left,top, right, bottom);
 			DebugOut(L"[INFO] left: %d\n", left);
 			DebugOut(L"[INFO] top: %d\n", top);
 			DebugOut(L"[INFO] right: %d\n", right);
 			DebugOut(L"[INFO] bottom: %d\n", bottom);*/
-			if (x > 210 ) {
-				DebugOut(L"[INFO] x> 210: %d\n");
-				x -= 210;
-				objects[i]->Render(x, y);
+			if (x < 0) {
+				x = 0;
+			}
+			else if (x > (right - SCREEN_WIDTH)) {
+				x = right - SCREEN_WIDTH;
 			}
 			
-			else {
-				DebugOut(L"[INFO] else: %d\n");
-				x = 0;
-				objects[i]->Render(x, y);
-			}		
+			objects[i]->Render(x, y);
+			
+			//if (x > 210 ) {
+			////	DebugOut(L"[INFO] x> 210: %d\n");
+			//	x -= 210;
+			//	
+			//}
+			//
+			//else {
+			//	DebugOut(L"[INFO] else: %d\n");
+			//	x = 0;
+			//	objects[i]->Render(x, y);
+			//}		
 		}
 		spriteHandler->End();
 		d3ddv->EndScene();
@@ -467,7 +491,7 @@ int Run()
 {
 	MSG msg;
 	int done = 0;
-	DWORD frameStart = GetTickCount();
+	DWORD frameStart = GetTickCount();//
 	DWORD tickPerFrame = 1000 / MAX_FRAME_RATE;
 
 	while (!done)

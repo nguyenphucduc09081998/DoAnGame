@@ -1,4 +1,4 @@
-#include <algorithm>
+﻿#include <algorithm>
 #include "debug.h"
 #include "Simon.h"
 #include "Game.h"
@@ -12,7 +12,7 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	vy += SIMON_GRAVITY * dt;
+	vy += SIMON_GRAVITY * dt; //vy += SIMON_GRAVITY; nếu viết theo công thức này sẽ rớt
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -205,10 +205,9 @@ void CSimon::SetState(int state)
 	case SIMON_STATE_JUMP:
 		DebugOut(L"[INFO] vy: %d\n", vy);
 		//DebugOut(L"[INFO] vx: %d\n", vx);
-		if (vy == 0) {
+		if (vy == 0) { // theo trang thái của simon, 
 			vy = -SIMON_JUMP_SPEED_Y;
 		}
-			
 		break;
 	case SIMON_STATE_DOWN:
 		vy = 0;

@@ -34,10 +34,10 @@ class CGame
 	LPDIRECTINPUT8       di;		// The DirectInput object         
 	LPDIRECTINPUTDEVICE8 didv;		// The keyboard device 
 
-	BYTE  keyStates[256];			// DirectInput keyboard state buffer 
-	DIDEVICEOBJECTDATA keyEvents[KEYBOARD_BUFFER_SIZE];		// Buffered keyboard data
+	BYTE  keyStates[256];			// DirectInput keyboard state buffer , danh sach nhung ban phim
+	DIDEVICEOBJECTDATA keyEvents[KEYBOARD_BUFFER_SIZE];		// Buffered keyboard data , 
 
-	LPKEYEVENTHANDLER keyHandler;
+	LPKEYEVENTHANDLER keyHandler;//gom cac phuong thuc ảo, de truyen đói tượng vào game của mình
 
 public:
 	void InitKeyboard(LPKEYEVENTHANDLER handler);
