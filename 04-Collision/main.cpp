@@ -149,8 +149,8 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 void LoadResources()
 {
 	CTextures * textures = CTextures::GetInstance();
-	textures->Add(ID_TEX_BACKGROUND, L"textures\\background.png", D3DCOLOR_XRGB(0, 0, 0));//add background
-	//textures->Add(ID_TEX_BACKGROUND, L"textures\\lv1.png", D3DCOLOR_XRGB(0, 0, 0));//add background
+	//textures->Add(ID_TEX_BACKGROUND, L"textures\\background.png", D3DCOLOR_XRGB(0, 0, 0));//add background
+	textures->Add(ID_TEX_BACKGROUND, L"textures\\tilemap\\lv1.png", D3DCOLOR_XRGB(0, 0, 0));//add background
 	textures->Add(ID_TEX_SIMON, L"textures\\simon.png", D3DCOLOR_XRGB(0, 128, 128));//add simon
 	textures->Add(ID_TEX_MISC, L"textures\\misc.png", D3DCOLOR_XRGB(176, 224, 248));//
 	textures->Add(ID_TEX_ENEMY, L"textures\\enemies.png", D3DCOLOR_XRGB(3, 26, 110));
@@ -166,6 +166,14 @@ void LoadResources()
 	//for (int i = 0; i < 47;  i++) {
 		sprites->Add(11000, 1, 1, 767, 183, texbackground);
 	//}
+		////////////////// edit 9hpm 24/09/2019
+	//	vector<LPSPRITE> Stage1Sprite;
+		//for (int i = 0; i < 47; i++) {
+		//	sprites->Add(30000 + i, i * 16, 0, (i + 1) * 16, 16, texbackground);
+		//	//Stage1Sprite.push_back(sprites->Get(30000 + i));
+		//}
+		////////////////// edit  9h pm 24/09/2019
+
 	//sprites->Add(11000, 1, 1, 767, 183, texbackground);
 	//auto map = TMXTiledMap::create("TileMap.tmx");
 	//addChild(map, 0, 99); // with a tag of '99'3

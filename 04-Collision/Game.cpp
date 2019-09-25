@@ -210,7 +210,8 @@ void CGame::SweptAABB(
 
 	float dx_entry, dx_exit, tx_entry, tx_exit;
 	float dy_entry, dy_exit, ty_entry, ty_exit;
-
+	//d_entry là quãng đường giữa ư vậy
+	//	d_exit là khonagr cách giữu 2 vậy, cuói
 	float t_entry; 
 	float t_exit; 
 
@@ -239,6 +240,7 @@ void CGame::SweptAABB(
 	else if (dx < 0)
 	{
 		dx_entry = sr - ml;
+
 		dx_exit = sl- mr;
 	}
 

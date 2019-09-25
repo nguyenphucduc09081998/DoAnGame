@@ -62,8 +62,8 @@ public:
 	virtual void RenderBoundingBox(float &xcamera, float &ycamera);
 
 	LPCOLLISIONEVENT SweptAABBEx(LPGAMEOBJECT coO);
-	void CalcPotentialCollisions(vector<LPGAMEOBJECT> *coObjects, vector<LPCOLLISIONEVENT> &coEvents);
-	void FilterCollision(
+	void CalcPotentialCollisions(vector<LPGAMEOBJECT> *coObjects, vector<LPCOLLISIONEVENT> &coEvents);// lấy tất cả các đối tượng có thể va chạm với simon
+	void FilterCollision( // chỉ chọn ra 2 đối tượng để va chạm theo chiều x và y
 		vector<LPCOLLISIONEVENT> &coEvents, 
 		vector<LPCOLLISIONEVENT> &coEventsResult, 
 		float &min_tx, 

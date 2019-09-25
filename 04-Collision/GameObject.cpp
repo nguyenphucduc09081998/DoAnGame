@@ -1,4 +1,4 @@
-#include <d3dx9.h>
+﻿#include <d3dx9.h>
 #include <algorithm>
 
 
@@ -26,7 +26,7 @@ void CGameObject::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 /*
 	Extension of original SweptAABB to deal with two moving objects
 */
-LPCOLLISIONEVENT CGameObject::SweptAABBEx(LPGAMEOBJECT coO)
+LPCOLLISIONEVENT CGameObject::SweptAABBEx(LPGAMEOBJECT coO) //lấy ra một đối tượng khi cả 2 cùng di chuyển
 {
 	float sl, st, sr, sb;		// static object bbox
 	float ml, mt, mr, mb;		// moving object bbox
