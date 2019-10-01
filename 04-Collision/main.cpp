@@ -41,8 +41,18 @@
 #define MAIN_WINDOW_TITLE L"04 - Collision"
 
 #define BACKGROUND_COLOR D3DCOLOR_XRGB(255, 255, 255)
-#define SCREEN_WIDTH 420 // 320
-#define SCREEN_HEIGHT 240  //240
+//#define SCREEN_WIDTH 420 // 320
+//#define SCREEN_HEIGHT 240  //240
+
+#define Chieu_Dai_Con 420 // 320
+#define Chieu_Cao_con 240  //240
+
+
+#define Path_Background_Image  L"TiledMap\\Stage 1 Source.png"
+#define Color_Background D3DCOLOR_XRGB(0, 0, 0)
+#define Path_TXT_Background   L"TiledMap\\stage1M.txt"	
+//#define MAP1_TEXTURE_PATH	    
+//#define STAGE1_TXT_PATH		    
 
 #define MAX_FRAME_RATE 120 // vẽ tối đa fram trong 1 giây, 
 
@@ -55,7 +65,7 @@
 CGame *game;
 CSimon *simon;
 CGoomba *goomba;
-CBackground *background;
+Background *background;
 
 vector<LPGAMEOBJECT> objects;
 
@@ -146,11 +156,41 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	TO-DO: Improve this function by loading texture,sprite,animation,object from file
 */
+
+void Loadbackground(int giaidoan) {
+	switch (giaidoan)
+	{
+	case giaidoan1:
+		background = Background::GetInstance(giaidoan1, ID_TEX_BACKGROUND, Path_Background_Image, NULL, Path_TXT_Background, Chieu_Dai_Con);
+		break;
+	case giaidoan2:
+		break;
+	case giaidoan3:
+		break;
+	default:
+		break;
+	}
+}
+
+void LoadGiaiDoan(int giaidoan) {
+	switch (giaidoan)
+	{
+	case giaidoan1:
+		Loadbackground(giaidoan1);
+		break;
+	default:
+		break;
+	}
+}
+
 void LoadResources()
 {
+	//
+	LoadGiaiDoan(giaidoan1);
+
 	CTextures * textures = CTextures::GetInstance();
 	//textures->Add(ID_TEX_BACKGROUND, L"textures\\background.png", D3DCOLOR_XRGB(0, 0, 0));//add background
-	textures->Add(ID_TEX_BACKGROUND, L"textures\\tilemap\\lv1.png", D3DCOLOR_XRGB(0, 0, 0));//add background
+	//textures->Add(ID_TEX_BACKGROUND, L"textures\\tilemap\\lv1.png", D3DCOLOR_XRGB(0, 0, 0));//add background
 	textures->Add(ID_TEX_SIMON, L"textures\\simon.png", D3DCOLOR_XRGB(0, 128, 128));//add simon
 	textures->Add(ID_TEX_MISC, L"textures\\misc.png", D3DCOLOR_XRGB(176, 224, 248));//
 	textures->Add(ID_TEX_ENEMY, L"textures\\enemies.png", D3DCOLOR_XRGB(3, 26, 110));
@@ -162,9 +202,9 @@ void LoadResources()
 	CAnimations * animations = CAnimations::GetInstance();
 	
 	// start load background titemap
-	LPDIRECT3DTEXTURE9 texbackground = textures->Get(ID_TEX_BACKGROUND);//add background
+	//LPDIRECT3DTEXTURE9 texbackground = textures->Get(ID_TEX_BACKGROUND);//add background
 	//for (int i = 0; i < 47;  i++) {
-		sprites->Add(11000, 1, 1, 767, 183, texbackground);
+		//sprites->Add(11000, 1, 1, 767, 183, texbackground);
 	//}
 		////////////////// edit 9hpm 24/09/2019
 	//	vector<LPSPRITE> Stage1Sprite;
@@ -227,9 +267,9 @@ void LoadResources()
 	ani->Add(15001);
 	animations->Add(150, ani);
 
-	ani = new CAnimation(100);	// background
-	ani->Add(11000);
-	animations->Add(110, ani);
+	//ani = new CAnimation(100);	// background
+	//ani->Add(11000);
+	//animations->Add(110, ani);
 
 	//fsd
 	ani = new CAnimation(100);	// jump right
@@ -298,9 +338,9 @@ void LoadResources()
 	ani->Add(30003);
 	animations->Add(702, ani);
 	//background
-	background = new CBackground();
+	/*background = new CBackground();
 	background->AddAnimation(110);
-	objects.push_back(background);
+	objects.push_back(background);*/
 
 	simon = new CSimon();
 	simon->AddAnimation(400);		// dung tai cho phai            0
@@ -391,6 +431,7 @@ void Update(DWORD dt)
 /*
 	Render a frame
 */
+
 void Render()
 {
 	LPDIRECT3DDEVICE9 d3ddv = game->GetDirect3DDevice();
@@ -406,25 +447,25 @@ void Render()
 
 		for (int i = 0; i < objects.size(); i++) {
 		 //background->
-			float x = simon->x - SCREEN_WIDTH/2;
+			float x = simon->x - Chieu_Dai_Con /2;
 			float y = 0;
 		//	void width_map = background->GetBoundingBox();
 			DebugOut(L"[INFO] Main.cpp->Render()->for: %d\n", x);
 			float left, top, right, bottom;
 		
-			background->GetBoundingBox(left, top, right, bottom);
+			//background->GetBoundingBox(left, top, right, bottom);
 			/*float left, top, right, bottom;
 			background->GetBoundingBox(left,top, right, bottom);
 			DebugOut(L"[INFO] left: %d\n", left);
 			DebugOut(L"[INFO] top: %d\n", top);
 			DebugOut(L"[INFO] right: %d\n", right);
 			DebugOut(L"[INFO] bottom: %d\n", bottom);*/
-			if (x < 0) {
+			/*if (x < 0) {
 				x = 0;
 			}
 			else if (x > (right - SCREEN_WIDTH)) {
 				x = right - SCREEN_WIDTH;
-			}
+			}*/
 			
 			objects[i]->Render(x, y);
 			
@@ -537,7 +578,7 @@ int Run()
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	HWND hWnd = CreateGameWindow(hInstance, nCmdShow, SCREEN_WIDTH, SCREEN_HEIGHT);
+	HWND hWnd = CreateGameWindow(hInstance, nCmdShow, Chieu_Dai_Con, Chieu_Cao_con);
 
 	game = CGame::GetInstance(); //
 	game->Init(hWnd);
@@ -548,7 +589,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	LoadResources();
 
-	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+	SetWindowPos(hWnd, 0, 0, 0, Chieu_Dai_Con * 2, Chieu_Cao_con * 2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
 	Run();
 

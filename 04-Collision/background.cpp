@@ -2,21 +2,25 @@
 
 
 
-void CBackground::Render(float &xcamera, float &ycamera)
-{
-	animations[0]->Render(x - xcamera, y - ycamera);
-	//RenderBoundingBox();
-}
-
-void CBackground::GetBoundingBox(float &l, float &t, float &r, float &b)
-{
-	l = x;
-	t = y;
-	r = x + Background_BBOX_WIDTH;
-	b = y + Background_BBOX_HEIGHT;
-
-} 
+//void CBackground::Render(float &xcamera, float &ycamera)
+//{
+//	animations[0]->Render(x - xcamera, y - ycamera);
+//	//RenderBoundingBox();
+//}
+//
+//void CBackground::GetBoundingBox(float &l, float &t, float &r, float &b)
+//{
+//	l = x;
+//	t = y;
+//	r = x + Background_BBOX_WIDTH;
+//	b = y + Background_BBOX_HEIGHT;
+//
+//} 
 ///////////// neww
+
+
+
+////////////
 Background * Background::__instance = NULL;
 Background * Background::GetInstance() {
 	return __instance;
@@ -61,7 +65,37 @@ Background::Background(int giaidoan, int Id_Background, LPCWSTR Path_Background_
 			}
 		}
 
+		////
 
+		ifstream infile;
+		infile.open(Path_TXT_Background);
+		infile >> width_b >> height_b;
+		fileread = new int*[height_b];
+		for (int i = 0; i < height_b; i++) {
+			fileread[i] = new int[width_b];
+		}
+		for (int i = 0; i < height_b; i++)
+		{
+			for (int j = 0; j < width_b; j++)
+			{
+				infile >> fileread[i][j];
+			}
+		}
+		int soluongCong;
+		infile >> soluongCong;
+		for (int i = 0; i < soluongCong; i++) {
+			Door doortemp;
+			infile >> doortemp.id;
+			infile >> doortemp.x;
+			infile >> doortemp.y;
+			infile >> doortemp.MapNext;
+			infile >> doortemp.x_next;
+			infile >> doortemp.y_next;
+			door.push_back(doortemp);
+		}
+
+		infile.close();
+		////
 	}
 
 
@@ -72,17 +106,17 @@ void Background::Render(float x_cam)
 {
 	CSprites * sprites = CSprites::GetInstance();
 	int jj, ii;
-	x = screen_width / 2;
-	for (int i = 0; i < h; i++)
+	bientam_1 = chieudai_con / 2;
+	for (int i = 0; i < height_b; i++)
 	{
 		ii = i * 16 + 55;
-		for (int j = camera_x / 16 - 12; j < camera_x / 16 + 5; j++)
+		for (int j = x_cam / 16 - 12; j < x_cam / 16 + 5; j++)
 		{
 			{
-				jj = -camera_x + j * 16 + x;
-				if (jj > -16 && jj < screen_width)
+				jj = -x_cam + j * 16 + bientam_1;
+				if (jj > -16 && jj < chieudai_con)
 				{
-					sprites->Get(21000 + Map[i][j])->Draw(jj, ii);
+					sprites->Get(21000 + fileread[i][j])->Draw(jj, ii);
 				}
 			}
 		}

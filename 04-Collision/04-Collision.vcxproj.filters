@@ -51,6 +51,12 @@
     <ClInclude Include="Luoi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Cam.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Diem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="debug.cpp">
@@ -90,6 +96,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Luoi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cam.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
