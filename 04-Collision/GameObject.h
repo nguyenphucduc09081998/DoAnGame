@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Sprites.h"
+#include <algorithm>
 
 
 using namespace std;
