@@ -33,13 +33,14 @@ Background::Background(int giaidoan, int Id_Background, LPCWSTR Path_Background_
 	this->giaidoan = giaidoan;
 	CTextures * textures = CTextures::GetInstance();
 	CSprites * sprites = CSprites::GetInstance();
+	NextMap = false;
 	textures->Add(Id_Background, Path_Background_Image, Color_Background);//add background
 	LPDIRECT3DTEXTURE9 texbackground = textures->Get(Id_Background);//add background
 	switch (giaidoan)
 	{
 	case 0:
 		break;
-	case 1:
+	case giaidoan1:
 		textures->Add(Id_Background, Path_Background_Image, Color_Background);//add background
 		for (int i = 0; i < 51; i++)
 			sprites->Add(21000 + i, i * 16, 0, (i + 1) * 16, 16, texbackground);
@@ -50,7 +51,7 @@ Background::Background(int giaidoan, int Id_Background, LPCWSTR Path_Background_
 	}
 	// 
 	if (giaidoan != 0) {
-		ifstream filein;
+		/*ifstream filein;
 		filein.open(Path_TXT_Background);
 		filein >> width_b >> height_b;
 		fileread = new int*[height_b];
@@ -63,7 +64,7 @@ Background::Background(int giaidoan, int Id_Background, LPCWSTR Path_Background_
 			{
 				filein >> fileread[i][j];
 			}
-		}
+		}*/
 
 		////
 
