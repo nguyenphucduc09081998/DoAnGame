@@ -45,6 +45,7 @@
     <ClInclude Include="fire.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -55,6 +56,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Diem.h">
+=======
+    <ClInclude Include="giadoan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DN.h">
+>>>>>>> duc1
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -92,6 +99,7 @@
     <ClCompile Include="fire.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -99,6 +107,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Cam.cpp">
+=======
+    <ClCompile Include="giadoan.cpp">
+>>>>>>> duc1
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

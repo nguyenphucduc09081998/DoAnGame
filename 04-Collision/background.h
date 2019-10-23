@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+<<<<<<< HEAD
 #include "Textures.h" 
 #include <fstream>
 #include <Windows.h>
@@ -13,10 +14,12 @@
 #include "Brick.h"
 #include "Cam.h"
 #include <iostream>
+=======
+#include "DN.h"
+>>>>>>> duc1
 
-#define Background_BBOX_WIDTH  770//16
-#define Background_BBOX_HEIGHT 185//16 chi bao ngoai cua vao cham
 
+<<<<<<< HEAD
 //class CBackground : public CGameObject
 //{
 //public:
@@ -74,3 +77,22 @@ public:
 	//void Update(float x_simon, float y_simon, vector<LPGAMEOBJECT>* Brick, float x_cam);
 };
 
+=======
+class CBackground : public CGameObject
+{
+	vector<LPSPRITE> sprites;
+	vector<vector<int>> position;
+	//int level;
+public:
+	//void load()
+	CBackground(vector<LPSPRITE> sprites, vector<vector<int>> position)
+	{
+		this->sprites = sprites;
+		this->position = position;
+	//	this->x = x;
+	//	this->y = y;
+	}
+	virtual void Render(float &xcamera, float &ycamera); //them x y trong render 
+	virtual void GetBoundingBox(float &l, float &t, float &r, float &b);
+};
+>>>>>>> duc1

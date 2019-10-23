@@ -1,5 +1,6 @@
 #include "background.h"
 
+<<<<<<< HEAD
 
 
 //void CBackground::Render(float &xcamera, float &ycamera)
@@ -24,6 +25,31 @@
 Background * Background::__instance = NULL;
 Background * Background::GetInstance() {
 	return __instance;
+=======
+void RoundNumber(float &number) {
+	int temp = number * 10000;
+	number = temp / 10000;
+}
+void CBackground::Render(float &xcamera, float &ycamera)
+{
+	//animations[0]->Render(x - xcamera, y - ycamera);
+	RenderBoundingBox(xcamera,ycamera);
+	int fromIndex = (xcamera -5 ) / 16;
+	int toIndex = (xcamera  +5+ 260) / 16;
+	fromIndex = fromIndex < 0 ? 0 : fromIndex;
+	toIndex = toIndex > position[0].size() - 1 ? position[0].size() - 1 : toIndex;
+	for (int i = 0; i < position.size(); i++) {
+		for (int j = fromIndex; j <= toIndex; j++) {
+			float drawX = j * 16 - xcamera;
+			float drawY = i * 16 - ycamera;
+			RoundNumber(drawX);
+			RoundNumber(drawY);
+			sprites[position[i][j]]->Draw(drawX, drawY+32, 255);
+
+		}
+
+	}
+>>>>>>> duc1
 }
 Background * Background::GetInstance(int giaidoan, int Id_Background, LPCWSTR Path_Background_Image, D3DCOLOR Color_Background, LPCWSTR Path_TXT_Background, int Screen_Width ) {
 	__instance = new Background(giaidoan,  Id_Background,  Path_Background_Image,  Color_Background,  Path_TXT_Background, Screen_Width);
