@@ -33,7 +33,7 @@
 #include "background.h"
 //#include "Background.h"
 #include "fire.h"
-#include "Cam.h"
+
 //#include "Bdfsdf.h"
 
 
@@ -48,9 +48,9 @@
 #define Chieu_Cao_con 240  //240
 
 
-#define Path_Background_Image  L"textures\\tilemap\\lv1.png"
+#define Path_Background_Image  L"TiledMap\\Stage 1 Source.png"
 #define Color_Background D3DCOLOR_XRGB(0, 0, 0)
-#define Path_TXT_Background   L"textures\\tilemap\\tilemap1.txt"	
+#define Path_TXT_Background   L"TiledMap\\stage1M.txt"	
 //#define MAP1_TEXTURE_PATH	    
 //#define STAGE1_TXT_PATH		    
 
@@ -442,10 +442,8 @@ void Render()
 	{
 		// Clear back buffer with a color
 		d3ddv->ColorFill(bb, NULL, BACKGROUND_COLOR); // tô màu màn hình.
-		Cam *Cam = Cam::GetInstance();
+
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);//màu nào mà trong xuốt thì đừng vẽ
-		
-		background->Render(Cam->GetX());
 
 		for (int i = 0; i < objects.size(); i++) {
 		 //background->
