@@ -1,27 +1,9 @@
-﻿/* =============================================================
-	INTRODUCTION TO GAME PROGRAMMING SE102
-
-	SAMPLE 04 - COLLISION
-
-	This sample illustrates how to:
-
-		1/ Implement SweptAABB algorithm between moving objects
-		2/ Implement a simple (yet effective) collision frame work
-
-	Key functions:
-		CGame::SweptAABB
-		CGameObject::SweptAABBEx
-		CGameObject::CalcPotentialCollisions
-		CGameObject::FilterCollision
-
-		CGameObject::GetBoundingBox
-
-================================================================ */
+﻿
 
 #include <windows.h>
 #include <d3d9.h>
 #include <d3dx9.h>
-
+#include <fstream>
 #include "debug.h"
 #include "Game.h"
 #include "GameObject.h"
@@ -33,30 +15,31 @@
 #include "background.h"
 //#include "Background.h"
 #include "fire.h"
-
+#include "giadoan.h"
 //#include "Bdfsdf.h"
 
 
-#define WINDOW_CLASS_NAME L"SampleWindow"
-#define MAIN_WINDOW_TITLE L"04 - Collision"
 
-#define BACKGROUND_COLOR D3DCOLOR_XRGB(255, 255, 255)
-#define SCREEN_WIDTH 420 // 320
-#define SCREEN_HEIGHT 240  //240
+
+//#define SCREEN_WIDTH 260 // 320
+//#define SCREEN_HEIGHT 240  //240
 
 #define MAX_FRAME_RATE 120 // vẽ tối đa fram trong 1 giây, 
 
 #define ID_TEX_SIMON 0
 #define ID_TEX_FIRE 5//add fire
 #define ID_TEX_ENEMY 10
-#define ID_TEX_MISC 20
+
 #define ID_TEX_BACKGROUND 40
 
 CGame *game;
 CSimon *simon;
 CGoomba *goomba;
+giadoan *giadoan1;
 CBackground *background;
-
+float cameraPosX = 0;
+float cameraPosY = 0;
+vector<giaidoan> giadoans;
 vector<LPGAMEOBJECT> objects;
 
 class CSampleKeyHander : public CKeyEventHandler
@@ -71,13 +54,15 @@ CSampleKeyHander * keyHandler;
 void CSampleKeyHander::OnKeyDown(int KeyCode)
 {
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+	if (KeyCode == DIK_Z) {
+		if (game->IsKeyDown(DIK_RIGHT) || game->IsKeyDown(DIK_LEFT)) { simon->setJump(true); }
+	}
 	switch (KeyCode)
 	{
 	
 	case DIK_Z:
 		//if(simon->y <= 121)
 			simon->SetState(SIMON_STATE_JUMP);
-		
 		//simon->SetLevel(SIMON_LEVEL_BIG);
 		break;
 	//gsdg
@@ -146,25 +131,36 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	TO-DO: Improve this function by loading texture,sprite,animation,object from file
 */
+void LoadGiaidoan(int giaidoan) {
+
+}
 void LoadResources()
 {
 	CTextures * textures = CTextures::GetInstance();
-	textures->Add(ID_TEX_BACKGROUND, L"textures\\background.png", D3DCOLOR_XRGB(0, 0, 0));//add background
+	CSprites * sprites = CSprites::GetInstance();
+	CAnimations * animations = CAnimations::GetInstance();
+	//
+	
+	//background->Render();
+
+	
+	
+	//	giadoan1 = new giadoan(1,background);
+	//giadoans.push_back(giadoan1);
+//	textures->Add(ID_TEX_BACKGROUND, L"textures\\background.png", D3DCOLOR_XRGB(0, 0, 0));//add background
 	//textures->Add(ID_TEX_BACKGROUND, L"textures\\lv1.png", D3DCOLOR_XRGB(0, 0, 0));//add background
-	textures->Add(ID_TEX_SIMON, L"textures\\simon.png", D3DCOLOR_XRGB(0, 128, 128));//add simon
-	textures->Add(ID_TEX_MISC, L"textures\\misc.png", D3DCOLOR_XRGB(176, 224, 248));//
-	textures->Add(ID_TEX_ENEMY, L"textures\\enemies.png", D3DCOLOR_XRGB(3, 26, 110));
-	textures->Add(ID_TEX_FIRE, L"textures\\fire.png", D3DCOLOR_XRGB(0, 0, 0));//add fire
+	textures->Add(ID_TEX_SIMON, L"textures\\simon.png", D3DCOLOR_XRGB(0, 0, 0));//add simon
+	textures->Add(ID_TEX_Brick, L"textures\\brick.png", D3DCOLOR_XRGB(176, 224, 248));//
+	//textures->Add(ID_TEX_ENEMY, L"textures\\enemies.png", D3DCOLOR_XRGB(3, 26, 110));
+	//textures->Add(ID_TEX_FIRE, L"textures\\fire.png", D3DCOLOR_XRGB(0, 0, 0));//add fire
 	textures->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 
-	CSprites * sprites = CSprites::GetInstance();
-	CAnimations * animations = CAnimations::GetInstance();
 	
 	// start load background titemap
-	LPDIRECT3DTEXTURE9 texbackground = textures->Get(ID_TEX_BACKGROUND);//add background
-	//for (int i = 0; i < 47;  i++) {
-		sprites->Add(11000, 1, 1, 767, 183, texbackground);
+	//LPDIRECT3DTEXTURE9 texbackground = textures->Get(ID_TEX_BACKGROUND);//add background
+	////for (int i = 0; i < 47;  i++) {
+	//	sprites->Add(11000, 1, 1, 767, 183, texbackground);
 	//}
 	//sprites->Add(11000, 1, 1, 767, 183, texbackground);
 	//auto map = TMXTiledMap::create("TileMap.tmx");
@@ -172,9 +168,9 @@ void LoadResources()
 
 
 
-	LPDIRECT3DTEXTURE9 texfire = textures->Get(ID_TEX_FIRE);//add fire
-	sprites->Add(15000, 1, 1, 17, 31, texfire);
-	sprites->Add(15001, 28, 1, 43, 31, texfire);
+	//LPDIRECT3DTEXTURE9 texfire = textures->Get(ID_TEX_FIRE);//add fire
+	//sprites->Add(15000, 1, 1, 17, 31, texfire);
+	//sprites->Add(15001, 28, 1, 43, 31, texfire);
 
 	//
 	LPDIRECT3DTEXTURE9 texSimon = textures->Get(ID_TEX_SIMON);
@@ -204,24 +200,24 @@ void LoadResources()
 	sprites->Add(20012, 700, 50, 725, 85, texSimon);
 	sprites->Add(20013, 652, 50, 680, 85, texSimon);
 	//sdfg
-	LPDIRECT3DTEXTURE9 texMisc = textures->Get(ID_TEX_MISC);
-	sprites->Add(40001, 408, 225, 424, 241, texMisc);
+	LPDIRECT3DTEXTURE9 brick = textures->Get(ID_TEX_Brick);
+	sprites->Add(40001, 0, 0, 31, 31, brick);
 
-	LPDIRECT3DTEXTURE9 texEnemy = textures->Get(ID_TEX_ENEMY);
-	sprites->Add(30001, 5, 14, 21, 29, texEnemy);
-	sprites->Add(30002, 25, 14, 41, 29, texEnemy);
-	sprites->Add(30003, 45, 21, 61, 29, texEnemy); // die sprite
+	//LPDIRECT3DTEXTURE9 texEnemy = textures->Get(ID_TEX_ENEMY);
+	//sprites->Add(30001, 5, 14, 21, 29, texEnemy);
+	//sprites->Add(30002, 25, 14, 41, 29, texEnemy);
+	//sprites->Add(30003, 45, 21, 61, 29, texEnemy); // die sprite
 
 	LPANIMATION ani;//khai bao
 
-	ani = new CAnimation(100);	// fire
-	ani->Add(15000);
-	ani->Add(15001);
-	animations->Add(150, ani);
+	//ani = new CAnimation(100);	// fire
+	//ani->Add(15000);
+	//ani->Add(15001);
+	//animations->Add(150, ani);
 
-	ani = new CAnimation(100);	// background
-	ani->Add(11000);
-	animations->Add(110, ani);
+	//ani = new CAnimation(100);	// background
+	//ani->Add(11000);
+	//animations->Add(110, ani);
 
 	//fsd
 	ani = new CAnimation(100);	// jump right
@@ -230,7 +226,7 @@ void LoadResources()
 	ani->Add(12001);
 	ani->Add(12000);
 	animations->Add(120, ani);
-	ani = new CAnimation(100);	// jump left
+	ani = new CAnimation(150);	// jump left
 	ani->Add(13000);
 	ani->Add(13001);
 	ani->Add(13000);
@@ -259,7 +255,7 @@ void LoadResources()
 	ani->Add(10003);
 	animations->Add(500, ani);
 
-	ani = new CAnimation(100);	// ngoi phai
+	ani = new CAnimation(200);	// ngoi phai
 	ani->Add(10004);
 	animations->Add(402, ani);
 
@@ -281,18 +277,18 @@ void LoadResources()
 	ani->Add(40001);
 	animations->Add(601, ani);
 
-	ani = new CAnimation(300);		// Goomba walk
-	ani->Add(30001);
-	ani->Add(30002);
-	animations->Add(701, ani);
+	//ani = new CAnimation(300);		// Goomba walk
+	//ani->Add(30001);
+	//ani->Add(30002);
+	//animations->Add(701, ani);
 
-	ani = new CAnimation(1000);		// Goomba dead
-	ani->Add(30003);
-	animations->Add(702, ani);
+	//ani = new CAnimation(1000);		// Goomba dead
+	//ani->Add(30003);
+	//animations->Add(702, ani);
 	//background
-	background = new CBackground();
+	/*background = new CBackground();
 	background->AddAnimation(110);
-	objects.push_back(background);
+	objects.push_back(background);*/
 
 	simon = new CSimon();
 	simon->AddAnimation(400);		// dung tai cho phai            0
@@ -338,13 +334,16 @@ void LoadResources()
 	//}
 
 
-	for (int i = 0; i < 48; i++)//add nền 
+	for (int i = 0; i < 47; i++)//add nền 
 	{
 		CBrick *brick = new CBrick();
 		brick->AddAnimation(601);
-		brick->SetPosition(0 + i * 16.0f, 150);//150 là khoảng cách của nền vs top
+		brick->SetPosition(0 + i * 16.0f, 176);//150 là khoảng cách của nền vs top
 		objects.push_back(brick);
 	}
+
+
+
 
 	// and Goombas 
 	//for (int i = 0; i < 5; i++)//số lượng goomba xuất hiện
@@ -356,7 +355,28 @@ void LoadResources()
 	//	goomba->SetState(GOOMBA_STATE_WALKING);//zzz
 	//	objects.push_back(goomba);
 	//}
-
+	ifstream inFile;
+	inFile.open(L"textures\\tilemap\\map1.txt");
+	int value;
+	vector<int> temp1;
+	vector<vector<int>> Stage1Pos;
+	while (inFile >> value) {
+		temp1.push_back(value);
+		if (temp1.size() == so_Ovuong) {
+			Stage1Pos.push_back(temp1);
+			temp1.clear();
+		}
+	}
+	textures->Add(ID_TEX_BACKGROUND_1, L"textures\\tilemap\\map1.png", D3DCOLOR_XRGB(255, 255, 255));
+	LPDIRECT3DTEXTURE9 texBackGround = textures->Get(ID_TEX_BACKGROUND_1);
+	vector<LPSPRITE> Stage1Sprite;
+	for (int i = 0; i < 47; i++) {
+		sprites->Add(30000 + i, i * 16, 0, (i + 1) * 16, 16, texBackGround);
+		Stage1Sprite.push_back(sprites->Get(30000 + i));
+	}
+	background = new CBackground(Stage1Sprite, Stage1Pos);
+	giadoan1 = new giadoan(1, background);
+	giadoans.push_back(giadoan1);
 }
 
 /*
@@ -395,43 +415,30 @@ void Render()
 		d3ddv->ColorFill(bb, NULL, BACKGROUND_COLOR); // tô màu màn hình.
 
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);//màu nào mà trong xuốt thì đừng vẽ
+		float x = simon->x - SCREEN_WIDTH / 2;
+		float y = 0;
+		DebugOut(L"[INFO] xxxx = %f\n", x);
+		giadoans[0]->Render(x, y);
 
 		for (int i = 0; i < objects.size(); i++) {
 		 //background->
-			float x = simon->x - SCREEN_WIDTH/2;
-			float y = 0;
 		//	void width_map = background->GetBoundingBox();
-			DebugOut(L"[INFO] Main.cpp->Render()->for: %d\n", x);
+			//DebugOut(L"[INFO] Main.cpp->Render()->for: %f\n", x);
 			float left, top, right, bottom;
-		
-			background->GetBoundingBox(left, top, right, bottom);
-			/*float left, top, right, bottom;
-			background->GetBoundingBox(left,top, right, bottom);
-			DebugOut(L"[INFO] left: %d\n", left);
-			DebugOut(L"[INFO] top: %d\n", top);
-			DebugOut(L"[INFO] right: %d\n", right);
-			DebugOut(L"[INFO] bottom: %d\n", bottom);*/
 			if (x < 0) {
 				x = 0;
-			}
-			else if (x > (right - SCREEN_WIDTH)) {
-				x = right - SCREEN_WIDTH;
-			}
+			}			
 			
 			objects[i]->Render(x, y);
+			//objects[1]->Render(x, y);
+		//	background->Render(x,y);
 			
-			//if (x > 210 ) {
-			////	DebugOut(L"[INFO] x> 210: %d\n");
-			//	x -= 210;
-			//	
-			//}
-			//
-			//else {
-			//	DebugOut(L"[INFO] else: %d\n");
-			//	x = 0;
-			//	objects[i]->Render(x, y);
-			//}		
+			
 		}
+		
+		//background->Render(cameraPosX, cameraPosY);
+		
+		
 		spriteHandler->End();
 		d3ddv->EndScene();
 	}

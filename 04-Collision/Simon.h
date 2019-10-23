@@ -7,9 +7,9 @@
 //sdfgs
 //0.1f
 //#define SIMON_DOWN_SPEED   0f
-#define SIMON_JUMP_SPEED_Y		0.5f
+#define SIMON_JUMP_SPEED_Y		0.2f
 #define SIMON_JUMP_DEFLECT_SPEED 0.2f
-#define SIMON_GRAVITY			0.002f
+#define SIMON_GRAVITY			0.0005f
 #define SIMON_DIE_DEFLECT_SPEED	 0.5f
 
 #define SIMON_STATE_IDLE			0
@@ -62,6 +62,7 @@ class CSimon : public CGameObject
 	int level;
 	int untouchable; // biến true false khi simon va chạm trong thời gian sẽ không bị ảnh hưởng bởi va trạm khác
 	DWORD untouchable_start;
+	bool jumpstatus;
 public:
 	CSimon() : CGameObject()
 	{
@@ -73,6 +74,8 @@ public:
 	void SetState(int state);
 	void SetLevel(int l) { level = l; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
+	void setJump(bool value) { jumpstatus = value; }
+	bool getJump() { return jumpstatus; }
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 };

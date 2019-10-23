@@ -132,9 +132,11 @@
     <ClInclude Include="background.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="debug.h" />
+    <ClInclude Include="DN.h" />
     <ClInclude Include="fire.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="giadoan.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="Simon.h" />
     <ClInclude Include="Sprites.h" />
@@ -147,6 +149,7 @@
     <ClCompile Include="fire.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="giadoan.cpp" />
     <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Simon.cpp" />

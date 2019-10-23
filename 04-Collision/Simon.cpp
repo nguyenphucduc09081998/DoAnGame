@@ -107,9 +107,9 @@ void CSimon::Render(float &xcamera, float &ycamera)
 		}
 		else
 		{
-			if (vy < 0) {
-				if (nx > 0) ani = SIMON_ANI_JUMP_LEFT;
-				else ani = SIMON_ANI_JUMP_RIGHT;
+			if (vy < 0 ) {
+				if (nx > 0) ani = SIMON_ANI_Ngoi_Phai;
+				else ani = SIMON_ANI_Ngoi_Trai;
 			}
 			else {
 				if (vx == 0)
@@ -195,14 +195,17 @@ void CSimon::SetState(int state)
 		break;
 	//dsfdsfsfd
 	case SIMON_STATE_WALKING_RIGHT:
-		vx = SIMON_WALKING_SPEED;//vx laf van toc di ngang
-		nx = 1; //khi va cham bi doi lai
-		break;
+		
+			vx = SIMON_WALKING_SPEED;//vx laf van toc di ngang
+			nx = 1; //khi va cham bi doi lai
+			break;
+				
 	case SIMON_STATE_WALKING_LEFT:
 		vx = -SIMON_WALKING_SPEED;
 		nx = -1;
 		break;
 	case SIMON_STATE_JUMP:
+	//	if (!setJump) vx = 0;
 		DebugOut(L"[INFO] vy: %d\n", vy);
 		//DebugOut(L"[INFO] vx: %d\n", vx);
 		if (vy == 0) { // theo trang thái của simon, 
